@@ -17,4 +17,35 @@ describe FactoryBot::Internal do
       expect(FactoryBot::Internal.trait_by_name(trait.name)).to eq trait
     end
   end
+
+  describe ".register_sequence" do
+    it "registers the provided sequence" do
+      sequence = FactoryBot::Sequence.new(:email)
+      configuration = FactoryBot::Internal.configuration
+      expect { FactoryBot::Internal.register_sequence(sequence) }.
+        to change { configuration.sequences.count }.
+        from(0).
+        to(1)
+    end
+  end
+
+  describe ".sequence_by_name" do
+    it "finds a registered sequence" do
+      sequence = FactoryBot::Sequence.new(:email)
+      FactoryBot::Internal.register_sequence(sequence)
+      expect(FactoryBot::Internal.sequence_by_name(sequence.name)).to eq sequence
+    end
+  end
+
+  describe ".rewind_sequences" do
+    it "rewinds the sequences and the internal sequences" do
+      sequence = FactoryBot::Sequence.new(:email)
+      inline_sequence = FactoryBot::Sequence.new(:email)
+      FactoryBot::Internal.register_sequence(sequence)
+      FactoryBot::Internal.register_inline_sequence(inline_sequence)
+      expect(sequence).to receive(:rewind).exactly(:once)
+      expect(inline_sequence).to receive(:rewind).exactly(:once)
+      FactoryBot::Internal.rewind_sequences
+    end
+  end
 end
