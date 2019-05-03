@@ -57,6 +57,17 @@ module FactoryBot
       def factory_by_name(name)
         factories.find(name)
       end
+
+      def register_factory(factory)
+        factory.names.each do |name|
+          factories.register(name, factory)
+        end
+        factory
+      end
+
+      def factory_by_name(name)
+        factories.find(name)
+      end
     end
   end
 end

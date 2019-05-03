@@ -96,4 +96,28 @@ describe FactoryBot::Internal do
       expect(FactoryBot::Internal.factory_by_name(factory.name)).to eq factory
     end
   end
+
+  describe ".register_factory" do
+    it "registers the provided factory" do
+      factory = FactoryBot::Factory.new(:object)
+      configuration = FactoryBot::Internal.configuration
+      expect { FactoryBot::Internal.register_factory(factory) }.
+        to change { configuration.factories.count }.
+        from(0).
+        to(1)
+    end
+
+    it "returns the registered factory" do
+      factory = FactoryBot::Factory.new(:object)
+      expect(FactoryBot::Internal.register_factory(factory)).to eq factory
+    end
+  end
+
+  describe ".factory_by_name" do
+    it "finds a registered factory" do
+      factory = FactoryBot::Factory.new(:object)
+      FactoryBot::Internal.register_factory(factory)
+      expect(FactoryBot::Internal.factory_by_name(factory.name)).to eq factory
+    end
+  end
 end
