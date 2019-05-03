@@ -8,6 +8,11 @@ describe FactoryBot::Internal do
         from(0).
         to(1)
     end
+
+    it "returns the registered trait" do
+      trait = FactoryBot::Trait.new(:admin)
+      expect(FactoryBot::Internal.register_trait(trait)).to eq trait
+    end
   end
 
   describe ".trait_by_name" do
@@ -26,6 +31,11 @@ describe FactoryBot::Internal do
         to change { configuration.sequences.count }.
         from(0).
         to(1)
+    end
+
+    it "returns the registered sequence" do
+      sequence = FactoryBot::Sequence.new(:email)
+      expect(FactoryBot::Internal.register_sequence(sequence)).to eq sequence
     end
   end
 
@@ -51,6 +61,30 @@ describe FactoryBot::Internal do
 
       expect(sequence).to have_received(:rewind).exactly(:once)
       expect(inline_sequence).to have_received(:rewind).exactly(:once)
+    end
+  end
+
+  describe ".register_factory" do
+    it "registers the provided factory" do
+      factory = FactoryBot::Factory.new(:object)
+      configuration = FactoryBot::Internal.configuration
+      expect { FactoryBot::Internal.register_factory(factory) }.
+        to change { configuration.factories.count }.
+        from(0).
+        to(1)
+    end
+
+    it "returns the registered factory" do
+      factory = FactoryBot::Factory.new(:object)
+      expect(FactoryBot::Internal.register_factory(factory)).to eq factory
+    end
+  end
+
+  describe ".factory_by_name" do
+    it "finds a registered factory" do
+      factory = FactoryBot::Factory.new(:object)
+      FactoryBot::Internal.register_factory(factory)
+      expect(FactoryBot::Internal.factory_by_name(factory.name)).to eq factory
     end
   end
 end
