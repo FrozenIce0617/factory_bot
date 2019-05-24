@@ -6,8 +6,11 @@ module FactoryBot
     end
 
     def method_missing(name, *args, &block)
-      return if respond_to?(name)
-      super
+      if respond_to?(name)
+        nil
+      else
+        super
+      end
     end
 
     def respond_to?(method, _include_private = false)
