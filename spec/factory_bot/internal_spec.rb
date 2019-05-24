@@ -39,13 +39,18 @@ describe FactoryBot::Internal do
 
   describe ".rewind_sequences" do
     it "rewinds the sequences and the internal sequences" do
-      sequence = FactoryBot::Sequence.new(:email)
-      inline_sequence = FactoryBot::Sequence.new(:email)
+      sequence = instance_double(FactoryBot::Sequence, names: ["email"])
+      allow(sequence).to receive(:rewind)
       FactoryBot::Internal.register_sequence(sequence)
+
+      inline_sequence = instance_double(FactoryBot::Sequence)
+      allow(inline_sequence).to receive(:rewind)
       FactoryBot::Internal.register_inline_sequence(inline_sequence)
-      expect(sequence).to receive(:rewind).exactly(:once)
-      expect(inline_sequence).to receive(:rewind).exactly(:once)
+
       FactoryBot::Internal.rewind_sequences
+
+      expect(sequence).to have_received(:rewind).exactly(:once)
+      expect(inline_sequence).to have_received(:rewind).exactly(:once)
     end
   end
 end

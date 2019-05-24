@@ -1,4 +1,4 @@
-describe "FactoryBot::Internal.rewind_sequences" do
+describe "FactoryBot.rewind_sequences" do
   include FactoryBot::Syntax::Methods
 
   it "resets all sequences back to their starting values" do
@@ -12,7 +12,7 @@ describe "FactoryBot::Internal.rewind_sequences" do
       generate(:name)
     end
 
-    FactoryBot::Internal.rewind_sequences
+    FactoryBot.rewind_sequences
 
     email = generate(:email)
     name = generate(:name)
@@ -32,7 +32,7 @@ describe "FactoryBot::Internal.rewind_sequences" do
 
     build_list(:user, 2)
 
-    FactoryBot::Internal.rewind_sequences
+    FactoryBot.rewind_sequences
 
     user = build(:user)
 
@@ -56,7 +56,7 @@ describe "FactoryBot::Internal.rewind_sequences" do
 
     build_list(:user, 2)
 
-    FactoryBot::Internal.rewind_sequences
+    FactoryBot.rewind_sequences
 
     user = build(:user)
     email = generate(:email)
@@ -82,7 +82,7 @@ describe "FactoryBot::Internal.rewind_sequences" do
 
     build_list(:user, 2)
 
-    FactoryBot::Internal.rewind_sequences
+    FactoryBot.rewind_sequences
 
     user = build(:user)
     email = generate(:user_email)
@@ -112,7 +112,7 @@ describe "FactoryBot::Internal.rewind_sequences" do
     build_list(:user, 2, :with_email)
     build_list(:person, 2, :with_email)
 
-    FactoryBot::Internal.rewind_sequences
+    FactoryBot.rewind_sequences
 
     user = build(:user, :with_email)
     person = build(:person, :with_email)

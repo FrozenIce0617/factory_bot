@@ -44,7 +44,7 @@ module FactoryBot
 
       def rewind_sequences
         sequences.each(&:rewind)
-        Internal.rewind_inline_sequences
+        rewind_inline_sequences
       end
     end
   end
